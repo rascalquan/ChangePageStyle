@@ -1,31 +1,30 @@
 {
-	"manifest_version": 2,
+    "manifest_version": 2,
 
-	"name": "修改样式",
-	"description": "该扩展程序可以修改页面样式",
-	"version": "1.0",
-	"author":"rascalquan",
-	"icons":{
-		"48": "images/icon_48.png"
-	},
+    "name": "修改样式",
+    "description": "该扩展程序可以修改页面样式",
+    "version": "1.0",
+    "author": "rascalquan",
+    "icons": {
+        "48": "images/icon_48.png"
+    },
 
-	"background":{
-		"scripts":["scripts/background.js"],
-		"persistent": false
-	},
-	"browser_action": {
-		"default_icon": "images/icon_24.png",
-		"default_popup": "html/popup.html"
-	},
-	//权限
-	"permissions": [
-		"activeTab",
-		"storage"
-	],
-	"content_scripts":[{
-		"matches":["<all_urls>"],
-		"js": ["scripts/jquery.js","scripts/contentscript.js"]
-		}	
-	]
+    "background": {
+        "scripts": ["scripts/background.js"],
+        "persistent": false
+    },
+    "browser_action": {
+        "default_icon": "images/icon_24.png",
+        "default_popup": "htmls/popup.html"
+    },
+    //权限
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["scripts/jquery.min.js", "scripts/contentscript.js"]
+    }]
 
 }
