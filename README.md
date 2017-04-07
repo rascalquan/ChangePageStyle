@@ -1,2 +1,2 @@
 # ChangePageStyle
-This is a chrome extension that can change the page style 
+This is a chrome extension that can change the page style as we want. 

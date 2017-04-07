@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>样式调整</title>
+	<style>
+		body {
+			font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+			font-size: 100%;
+		}
+		
+		#mainDiv {
+			width: 400px;
+			height: 300px;
+			text-align: center;
+		}
+	</style>
+
+	<script src="../scripts/jquery.js"></script>
+	<script src="../scripts/kendo.js"></script>
+	<script src="../scripts/popup.js"></script>
+
+</head>
+
+<body>
+	<div id="mainDiv">
+		<div>
+			<h3>Welcome To My Extention.</h3>
+		</div>
+		<table id="mainGrid">
+			<colgroup>
+				<col style="width:80px" />
+				<col style="width:80px" />
+				<col style="width:80px" />
+				<col style="width:80px" />
+				<col style="width:80px" />
+			</colgroup>
+			<thead>
+				<tr>
+					<th data-field="selectorField">选择器</th>
+					<th data-field="attrKey">属性</th>
+					<th data-field="attrValue" >值</th>
+					<th data-field="activeRange">生效范围</th>
+					<th data-field="isOneTime">生效次数</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Nancy</td>
+					<td>Davolio</td>
+					<td>email</td>
+					<td>Nancy</td>
+					<td>Nancy</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+
+</html>
