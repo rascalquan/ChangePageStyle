@@ -20,11 +20,13 @@
     //权限
     "permissions": [
         "activeTab",
+        "tabs",
         "storage"
     ],
     "content_scripts": [{
         "matches": ["<all_urls>"],
         "js": ["scripts/jquery.min.js", "scripts/contentscript.js"]
-    }]
+    }],
+    "content_security_policy": "default-src 'self' 'unsafe-eval';style-src 'self' 'unsafe-inline'"
 
 }
