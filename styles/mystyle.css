@@ -1,6 +1,6 @@
 body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-    font-size: 100%;
+    font-size: 13px;
 }
 
 h1 {
@@ -8,10 +8,9 @@ h1 {
 }
 
 #mainDiv {
-    width: 700px;
-    height: 260px;
+    height: 220px;
     text-align: center;
-    max-height: 300px;
+    max-height: 240px;
 }
 
 #mainGrid {
@@ -19,7 +18,7 @@ h1 {
 }
 
 #mainGrid .k-grid-content {
-    max-height: 135px;
+    max-height: 115px;
 }
 
 .k-grid-toolbar {
