@@ -1,5 +1,6 @@
 ﻿'use strict';
 jQuery(function($) {
+
     $("#mainGrid").kendoGrid({
         columns: [{
                 field: "dataId",
@@ -76,6 +77,7 @@ jQuery(function($) {
         //edit: gridUpdate,
         //remove: gridDestroy
     });
+    initFace();
 
     function attrKeyDropDownEditor(container, options) {
         $('<input required data-text-field="attrKey" data-value-field="attrKey" data-bind="value:' + options.field + '"/>')
@@ -90,7 +92,6 @@ jQuery(function($) {
                 }
             });
     }
-
     //grid读取数据
     function gridRead(options) {
         console.log("begin read");
@@ -174,6 +175,9 @@ jQuery(function($) {
         return uuid;
     };
 
+    function initFace() {
+        $(".k-filter-row th, .k-grid-header th.k-header").css("text-align", "center");
+    }
     //MVVM  暂时不用
     // var viewModel = kendo.observable({
     //     onsave: function(e) {

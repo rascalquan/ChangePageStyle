@@ -1,8 +1,8 @@
 {
     "manifest_version": 2,
 
-    "name": "修改样式",
-    "description": "该扩展程序可以修改页面样式",
+    "name": "CSS修改器",
+    "description": "该扩展程序可以修改页面CSS样式",
     "version": "1.0",
     "author": "rascalquan",
     "icons": {

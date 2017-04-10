@@ -3,18 +3,29 @@ body {
     font-size: 100%;
 }
 
+h1 {
+    font-size: 25;
+}
+
 #mainDiv {
     width: 700px;
-    height: 240px;
+    height: 260px;
     text-align: center;
     max-height: 300px;
 }
 
 #mainGrid {
     margin-bottom: 30px;
-    text-align: left;
 }
 
 #mainGrid .k-grid-content {
-    max-height: 123px;
+    max-height: 135px;
+}
+
+.k-grid-toolbar {
+    text-align: left;
+}
+
+.k-grid-content {
+    text-align: center;
 }
