@@ -6,7 +6,7 @@ jQuery(function($) {
                 field: "dataId",
                 hidden: true
             },
-            { field: "selectorField", title: "Selector", width: "100px" },
+            { field: "selectorField", title: "Selector", editor: selectorAutoCompleteEditor, width: "100px" },
             { field: "attrKey", title: "Attribute", editor: attrKeyAutoCompleteEditor, width: "120px" },
             { field: "attrValue", title: "AttrValue", editor: attrValueAutoCompleteEditor, width: "120px" },
             { field: "activeRange", title: "Range", editor: rangeDropdownListEditor, width: "100px" },
@@ -93,6 +93,33 @@ jQuery(function($) {
     }).data("kendoNotification")
     initFace();
     initEvent();
+
+    function selectorAutoCompleteEditor(container, options) {
+        $('<input  required data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoAutoComplete({
+                //dataSource: ["color", "border", "background"],
+                suggest: true,
+                ignoreCase: true,
+                highlightFirst: false,
+                animation: {
+                    open: {
+                        effects: "fadeIn zoom:in",
+                        duration: 300
+                    },
+                    close: {
+                        effects: "fadeOut zoom:out",
+                        duration: 300
+                    }
+                }
+            })
+            .kendoValidator({
+                message: {
+                    required: "selector is required!"
+                },
+                validateOnBlur: true
+            });
+    }
 
     function attrKeyAutoCompleteEditor(container, options) {
         $('<input required  data-bind="value:' + options.field + '"/>')
@@ -221,8 +248,20 @@ jQuery(function($) {
             }
         })
     }
-    //点击grid编辑按钮
+    //点击grid编辑
     function gridEdit(e) {
+        //绑定selector数据源
+        var bg = chrome.extension.getBackgroundPage(); //获取background页面
+        bg.SendMessage("Selector", function() {
+            if (typeof response.farewell !== "undefined" && response.farewell !== null) {
+                var dataSource = new kendo.data.DataSource({
+                    data: selectorData
+                });
+                $(".k-grid-edit-row>td:eq(1) :input").data("kendoAutoComplete").setDataSource(dataSource.options.data);
+            }
+        });
+
+        //保存前验证栏位
         $(".k-grid-update").on("click", function(event) {
             console.log("btnUpdate click");
             event.preventDefault();
@@ -288,6 +327,8 @@ jQuery(function($) {
             }
         })
     };
+
+
     //MVVM  暂时不用
     // var viewModel = kendo.observable({
     //     onsave: function(e) {
