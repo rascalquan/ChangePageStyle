@@ -1,24 +1,25 @@
 ﻿'use strict';
-jQuery(function($) {
-
+jQuery(function ($) {
+    var selectorDataSource;
+    getAllSelector();
     $("#mainGrid").kendoGrid({
         columns: [{
-                field: "dataId",
-                hidden: true
-            },
-            { field: "selectorField", title: "Selector", editor: selectorAutoCompleteEditor, width: "100px" },
-            { field: "attrKey", title: "Attribute", editor: attrKeyAutoCompleteEditor, width: "120px" },
-            { field: "attrValue", title: "AttrValue", editor: attrValueAutoCompleteEditor, width: "120px" },
-            { field: "activeRange", title: "Range", editor: rangeDropdownListEditor, width: "100px" },
-            { field: "forever", title: "Forever", editor: foreverCheckBoxEditor, width: "80px" },
-            {
-                command: [
-                    { name: "edit", text: "Edit" },
-                    { name: "destroy", text: "Delete" }
-                ],
-                title: "Operate",
-                width: "180px"
-            }
+            field: "dataId",
+            hidden: true
+        },
+        { field: "selectorField", title: "Selector", editor: selectorAutoCompleteEditor, width: "120px" },
+        { field: "attrKey", title: "Attribute", editor: attrKeyAutoCompleteEditor, width: "120px" },
+        { field: "attrValue", title: "AttrValue", editor: attrValueAutoCompleteEditor, width: "120px" },
+        { field: "activeRange", title: "Range", editor: rangeDropdownListEditor, width: "100px" },
+        { field: "forever", title: "Forever", editor: foreverCheckBoxEditor, width: "80px" },
+        {
+            command: [
+                { name: "edit", text: "Edit" },
+                { name: "destroy", text: "Delete" }
+            ],
+            title: "Operate",
+            width: "180px"
+        }
         ],
         dataSource: {
             transport: {
@@ -98,10 +99,11 @@ jQuery(function($) {
         $('<input  required data-bind="value:' + options.field + '"/>')
             .appendTo(container)
             .kendoAutoComplete({
-                //dataSource: ["color", "border", "background"],
+                dataSource: selectorDataSource,
                 suggest: true,
                 ignoreCase: true,
                 highlightFirst: false,
+                height: 120,
                 animation: {
                     open: {
                         effects: "fadeIn zoom:in",
@@ -132,7 +134,7 @@ jQuery(function($) {
                 suggest: true,
                 ignoreCase: true,
                 highlightFirst: false,
-                height: "200px",
+                height: 70,
                 animation: {
                     open: {
                         effects: "fadeIn zoom:in",
@@ -143,7 +145,7 @@ jQuery(function($) {
                         duration: 300
                     }
                 },
-                change: function(e) {
+                change: function (e) {
                     var propertyKey = this.value();
                     var dataSource = new kendo.data.DataSource({
                         data: propertyKeyValues.find(getObjInArray).propertyValue
@@ -165,6 +167,7 @@ jQuery(function($) {
                 suggest: true,
                 ignoreCase: true,
                 highlightFirst: false,
+                height: 70,
                 animation: {
                     open: {
                         effects: "fadeIn zoom:in",
@@ -209,7 +212,7 @@ jQuery(function($) {
     //grid读取数据
     function gridRead(options) {
         console.log("begin read");
-        getCurrentTabUrl(function(url) {
+        getCurrentTabUrl(function (url) {
             var attrName = "StyleData_" + url;
             if (typeof localStorage[attrName] !== "undefined") {
                 var datas = JSON.parse(localStorage[attrName]);
@@ -221,7 +224,7 @@ jQuery(function($) {
     function gridCreate(options) {
         var data = getGridData(options);
         options.success(data);
-        getCurrentTabUrl(function(url) {
+        getCurrentTabUrl(function (url) {
             var attrName = "StyleData_" + url;
             localStorage[attrName] = JSON.stringify(getAllGridData()); //保存到本地
         })
@@ -231,14 +234,14 @@ jQuery(function($) {
         console.log("begin Update");
         var data = getGridData(options);
         options.success(data);
-        getCurrentTabUrl(function(url) {
+        getCurrentTabUrl(function (url) {
             var attrName = "StyleData_" + url;
             localStorage[attrName] = JSON.stringify(getAllGridData()); //保存到本地
         })
     }
     //grid删除数据
     function gridDestroy(e) {
-        getCurrentTabUrl(function(url) {
+        getCurrentTabUrl(function (url) {
             var attrName = "StyleData_" + url;
             var allData = getAllGridData();
             if (typeof allData !== "undefined") {
@@ -250,19 +253,8 @@ jQuery(function($) {
     }
     //点击grid编辑
     function gridEdit(e) {
-        //绑定selector数据源
-        var bg = chrome.extension.getBackgroundPage(); //获取background页面
-        bg.SendMessage("Selector", function() {
-            if (typeof response.farewell !== "undefined" && response.farewell !== null) {
-                var dataSource = new kendo.data.DataSource({
-                    data: selectorData
-                });
-                $(".k-grid-edit-row>td:eq(1) :input").data("kendoAutoComplete").setDataSource(dataSource.options.data);
-            }
-        });
-
         //保存前验证栏位
-        $(".k-grid-update").on("click", function(event) {
+        $(".k-grid-update").on("click", function (event) {
             console.log("btnUpdate click");
             event.preventDefault();
             var validator = $("#mainForm").kendoValidator().data("kendoValidator");
@@ -297,7 +289,7 @@ jQuery(function($) {
             active: true,
             currentWindow: true
         };
-        chrome.tabs.query(queryInfo, function(tabs) {
+        chrome.tabs.query(queryInfo, function (tabs) {
             var tab = tabs[0];
             var url = tab.url;
             callback(url);
@@ -307,7 +299,7 @@ jQuery(function($) {
     //生成UUID
     function generateUUID() {
         var d = new Date().getTime();
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             var r = (d + Math.random() * 16) % 16 | 0;
             d = Math.floor(d / 16);
             return (c == 'x' ? r : (r & 0x7 | 0x8)).toString(16);
@@ -322,12 +314,24 @@ jQuery(function($) {
     function initEvent() {
         console.log("begin initEvent");
         $("#mainForm").kendoValidator({
-            validate: function(e) {
+            validate: function (e) {
                 console.log("valid" + e.valid);
             }
-        })
+        });
     };
-
+    //获取所有selector
+    function getAllSelector() {
+        console.log('begin getAllSelector');
+        var data = new Array();
+        var bg = chrome.extension.getBackgroundPage(); //获取background页面
+        bg.SendMessage("Selector", function (response) {
+            if (typeof response !== "undefined" && response !== null) {
+                data=response.farewell.ids.concat(response.farewell.classNames).concat(response.farewell.tags).concat(response.farewell.others).sort();
+            }
+            console.log('end getAllSelector,data:'+data.join(','));
+            selectorDataSource=data;
+        })
+    }
 
     //MVVM  暂时不用
     // var viewModel = kendo.observable({
